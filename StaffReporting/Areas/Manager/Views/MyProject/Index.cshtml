@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Management.Models.Work>
+
+<div class="row">
+	<div class="col-md-12">
+		@if (Model != null && Model.Any())
+		{
+			foreach (var task in Model)
+			{
+				<!-- Report Header -->
+				<div class="card card-header mt-2">
+					<h5>
+						<strong> Project: </strong> <a class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" asp-controller="Report" asp-action="Index" asp-route-WorkId="@task.Id">
+							@task.Code-@task.Title @if (task.IsComplete)
+							{
+								<i class="fa fa-check" style="color: green;" aria-hidden="true"></i>
+							}
+						</a>
+					</h5>
+					@{
+						DateTime currentDate = DateTime.Now;
+						DateTime? targetDate = task.DeadLine; // Nullable DateTime from the model
+
+						// Ensure targetDate is not null before calculating
+						int? remainingDays = null;
+						bool isToday = false;
+
+						if (targetDate.HasValue)
+						{
+							TimeSpan dateDifference = targetDate.Value - currentDate;
+							remainingDays = dateDifference.Days;
+
+							// Check if the target date is today (ignoring time)
+							isToday = targetDate.Value.Date == currentDate.Date;
+						}
+					}
+
+					@if (remainingDays == null)
+					{
+
+					}
+					else if (remainingDays < 0)
+					{
+						<h6 style="color: red;">
+							Project Deadline: @targetDate?.ToString("dd-MMM-yyyy") passed (@Math.Abs(remainingDays.Value)) days ago.
+						</h6>
+					}
+					else if (isToday)
+					{
+						<h6 style="color: orange;">Project Deadline: @targetDate?.ToString("dd-MMM-yyyy") (The deadline is today!)</h6>
+					}
+					else
+					{
+						<h6 style="color: green;">Project Deadline: @targetDate?.ToString("dd-MMM-yyyy") (@(remainingDays + 1) days remaining).</h6>
+					}
+
+
+					<h6 class="m-0 p-0">
+						<strong> Project Description: </strong> @Html.Raw(task.Description)
+
+						<a class="btn btn-sm position-relative assign-user-btn"
+						   data-work-id="@task.Id">
+							<span class="badge rounded-pill bg-danger">
+								<i class="fa fa-address-card"></i> Assigned Users
+							</span>
+						</a>
+					</h6>
+
+					<a class="dropdown-item" asp-area="Manager" asp-controller="Work" asp-action="WriteUp" asp-route-WorkId="@task.Id">
+						<span class="badge rounded-pill btn btn-info"><i class="fa fa-plus"></i> Submit New Report</span>
+					</a>
+				</div>
+			}
+		}
+		else
+		{
+			<div class="d-flex justify-content-center align-items-center mt-5">
+				<div class="text-center">
+					<h5><i class="fa fa-ban"></i> No remark found or no project.</h5>
+				</div>
+			</div>
+		}
+	</div>
+</div>
+<div id="assignUserModalContainer"></div>

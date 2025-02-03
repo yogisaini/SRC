@@ -1,0 +1,15 @@
+﻿@model IEnumerable<Management.Models.Comment>
+
+@if (Model != null && Model.Any())
+{
+    @foreach (var comment in Model)
+    {
+        <strong class="text-uppercase">Comments:</strong>
+        <div>
+            <strong><i class="fa fa-user"></i></strong>
+            <span><strong>@comment.Users?.Username</strong></span>
+            <span style="font-style:italic"> @comment.CommentDate.ToString("dd/MMM/yyyy hh:mm tt")</span>
+            <p class="fs-6 fs-md-5">@Html.Raw(comment.CommentText)</p>
+        </div>
+    }
+}

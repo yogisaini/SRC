@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Management.Models.Users>
+@{
+	int serialNumber = 1;
+}
+<div class="text-center">
+	<h2 class="my-0">User List</h2>
+</div>
+
+<div class="d-flex justify-content-between mb-2">
+	<a href="@Url.Action("Create")" class="btn btn-primary">Add User</a>
+</div>
+<table class="display responsive table" style="width:100%">
+	<thead>
+		<tr>
+			<th data-priority="1">S.No</th>
+			<th data-priority="2">Name</th>
+			<th data-priority="4">Email</th>
+			<th data-priority="5">Mobile</th>
+			<th data-priority="6">Role</th>
+			<th data-priority="7">Designation</th>
+			<th data-priority="9">Update on</th>
+			<th data-priority="8">Status</th>
+			<th data-priority="3">Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var user in Model)
+		{
+			<tr>
+				<td>@serialNumber </td>
+				<td><a asp-controller="Report" asp-action="Index" asp-route-UserId="@user.UserId">@user.Username</a></td>
+				<td>@user.Email</td>
+				<td>@user.Mobile</td>
+				<td>@user.Role</td>
+				<td>@user.Desi.DesiName</td>
+				<td>@user.UpdateDate</td>
+				<td>@(user.IsActive ? "Active" : "Inactive")</td>
+				<td>
+					<a asp-action="Edit" asp-route-id="@user.UserId"><i class="btn fa fa-pencil" aria-hidden="true"></i></a>
+					<a asp-action="Details" asp-route-id="@user.UserId"><i class="btn fa fa-eye" aria-hidden="true"></i></a>
+					<a asp-action="Delete" asp-route-id="@user.UserId"><i class="btn fa fa-trash" aria-hidden="true"></i></a>
+				</td>
+			</tr>
+			serialNumber++;
+		}
+	</tbody>
+</table>

@@ -1,0 +1,65 @@
+﻿<div class="container mt-5">
+	<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+		@if (User.IsInRole("Default"))
+		{
+			<div class="col">
+				<div class="card text-center h-100">
+					<div class="card-body">
+						<a class="dropdown-item" asp-area="" class="btn btn-link card-link" asp-controller="Project" asp-action="Index">
+							<i class="fa fa-folder-open"></i> Projects
+						</a>
+					</div>
+				</div>
+			</div>
+		}
+
+		<div class="col">
+			<div class="card text-center h-100">
+				<div class="card-body">
+					<a class="dropdown-item" asp-area="User" class="btn btn-link card-link" asp-controller="User" asp-action="Edit">
+						<i class="fa fa-user"></i> User Profile/Change Password
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			<div class="card text-center h-100">
+				<div class="card-body">
+					<a class="dropdown-item" asp-area="User" class="btn btn-link card-link" asp-controller="Work" asp-action="WriteUp">
+						<i class="fa fa-plus"></i> Submit New Report
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			<div class="card text-center h-100">
+				<div class="card-body">
+					<a class="dropdown-item" asp-area="User" class="btn btn-link card-link" asp-controller="Work" asp-action="Index">
+						<i class="fa fa-folder"></i> My Reports
+					</a>
+				</div>
+			</div>
+		</div>
+		<!-- Card 4 -->
+		<div class="col">
+			<div class="card text-center h-100">
+				<div class="card-body">
+					<a class="dropdown-item" asp-area="User" class="btn btn-link card-link" asp-controller="Report" asp-action="Index">
+						<i class="fa fa-sitemap"></i> Project Wise Reports
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col">
+			<div class="card text-center h-100">
+				<div class="card-body">
+					<a class="dropdown-item" asp-area="User" class="btn btn-link card-link" asp-controller="MyProject" asp-action="Index">
+						<i class="fa fa-keyboard-o"></i> My Projects
+					</a>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>

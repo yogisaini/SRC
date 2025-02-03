@@ -1,0 +1,111 @@
+﻿@model Management.Models.WriteUp
+
+<h2>Submit New Report</h2>
+<style>
+    /* Page opacity effect */
+    .dimmed {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+</style>
+<div id="loader" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; background: rgba(255, 255, 255, 0.8); padding: 20px; border-radius: 5px;">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <p style="text-align: center; margin-top: 10px;">Loading, please wait...</p>
+</div>
+
+<form asp-action="WriteUp" method="post" enctype="multipart/form-data" class="needs-validation">
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="form-label" asp-for="WorkId">Select a Project</label>
+            <select asp-for="WorkId" class="form-select select-work" asp-items="@ViewBag.Project" required>
+                <option value="">Please Select</option>
+            </select>
+            <span asp-validation-for="WorkId" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label" asp-for="Task">Select Task</label>
+            <select asp-for="Task" class="form-select" asp-items="@ViewBag.Tasklist" required>
+                <option value="">Please Select</option>
+            </select>
+            <span asp-validation-for="Task" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-9">
+            <label class="form-label" asp-for="Remark">Add Remark</label>
+            <textarea asp-for="Remark" id="editor" class="form-control summernote" required></textarea>
+            <span asp-validation-for="Remark" class="text-danger"></span>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Upload Multiple Files</label>
+            <div id="fileUploadContainer">
+                <input type="file" class="form-control mb-2" name="files" onchange="addFileInput(this)" />
+            </div>
+            <span asp-validation-for="Linkpaths" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 text-center">
+			<a asp-controller="Dashboard" asp-action="Index" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary" id="submitButton">Submit</button>
+        </div>
+    </div>
+</form>
+
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const loader = document.getElementById('loader');
+            const body = document.body;
+            const form = document.querySelector('form');
+
+            // Handle form submission
+            form.addEventListener('submit', function (event) {
+                // Check form validity
+                if (!form.checkValidity()) {
+                    event.preventDefault(); // Prevent submission
+                    event.stopPropagation(); // Stop further event propagation
+                    form.classList.add('was-validated'); // Add validation feedback
+                    console.log('Form is invalid. Loader not shown.');
+                    return; // Exit early on invalid form
+                }
+
+                console.log('Form is valid. Showing loader.');
+                loader.style.display = 'block'; // Show the loader
+                body.classList.add('dimmed'); // Apply the dimmed effect to the page
+            }, false);
+
+            // Prevent accidental double submission
+            form.addEventListener('submit', function () {
+                const submitButton = document.getElementById('submitButton');
+                if (submitButton) {
+                    submitButton.disabled = true; // Disable the button after submission
+                }
+            });
+        });
+    </script>
+    <script>
+        function addFileInput(inputElement) {
+            // Check if the current input has a file selected
+            if (inputElement.files.length > 0) {
+                // Create a new input element
+                const newInput = document.createElement('input');
+                newInput.type = 'file';
+                newInput.name = 'files';
+                newInput.className = 'form-control mb-2';
+                newInput.onchange = function () {
+                    addFileInput(newInput); // Add new input when a file is selected
+                };
+
+                // Append the new input element to the file upload container
+                const container = document.getElementById('fileUploadContainer');
+                container.appendChild(newInput);
+            }
+        }
+    </script>
+}

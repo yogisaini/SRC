@@ -1,0 +1,74 @@
+﻿<div class="container mt-4">
+	<div class="card shadow-sm">
+		<div class="card-header bg-primary text-white">
+			<h2 class="mb-0">Project Details</h2>
+		</div>
+		<div class="card-body">
+			<div class="row mb-3">
+				<div class="col-sm-3 fw-bold">Project Code:</div>
+				<div class="col-sm-9">@Model.Code</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-sm-3 fw-bold">Project Name:</div>
+				<div class="col-sm-9">@Model.Title</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-sm-3 fw-bold">Description:</div>
+				<div class="col-sm-9">@Html.Raw(Model.Description)</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-sm-3 fw-bold">Assigned Manager:</div>
+				<div class="col-sm-9">@Model.Users.Username</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-sm-3 fw-bold">Department:</div>
+				<div class="col-sm-9">@Model.Dept.DeptName</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-sm-3 fw-bold">Priority:</div>
+				<div class="col-sm-9">@Model.Priority</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-sm-3 fw-bold">Created By:</div>
+				<div class="col-sm-9">@Model.CreatedBy</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-sm-3 fw-bold">Created Date:</div>
+				<div class="col-sm-9">@Model.CreatedDate.ToString("dd/MMM/yyyy hh:mm tt")</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-sm-3 fw-bold">Updated By:</div>
+				<div class="col-sm-9">@Model.UpdateBy</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-sm-3 fw-bold">Update Date:</div>
+				<div class="col-sm-9">@Model.UpdateDate.ToString("dd/MMM/yyyy hh:mm tt")</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-sm-3 fw-bold">Status:</div>
+				<div class="col-sm-9">@(Model.IsActive ? "Active" : "Inactive")</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-sm-3 fw-bold">Project :</div>
+				<div class="col-sm-9">@(Model.IsComplete ? "Completed" : "Is Working")</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-sm-3 fw-bold">Project DeadLine:</div>
+				<div class="col-sm-9">
+					@if (Model.DeadLine != null)
+					{
+						@Model.DeadLine.ToString("dd/MMM/yyyy")
+						;
+					}
+					else
+					{
+						<span>Data not set</span>
+					}
+				</div>
+			</div>
+		</div>
+		<div class="card-footer text-end">
+			<a asp-action="Index" class="btn btn-secondary">Back to List</a>
+		</div>
+	</div>
+</div>

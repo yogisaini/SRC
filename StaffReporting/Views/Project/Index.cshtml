@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Management.Models.Work>
+@{
+	int serialNumber = 1;
+}
+<div class="text-center">
+	<h2 class="my-0">Project List</h2>
+</div>
+<a asp-action="Create" class="btn btn-primary mb-2">Create New Project</a>
+<table class="responsive table" style="width:100%">
+	<thead>
+		<tr>
+			<th data-priority="1">S.No</th>
+			<th data-priority="3">Project Name</th>
+			<th data-priority="4">Department</th>
+			<th data-priority="5">Reporting Manager</th>
+			<th data-priority="6">Created on</th>
+			<th data-priority="7">Update on</th>
+			<th data-priority="8">Status</th>
+			<th data-priority="2">Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var task in Model)
+		{
+			<tr>
+				<td>
+				@serialNumber </td>
+				<td>
+					<a asp-controller="Report" asp-action="Index" asp-route-WorkId="@task.Id">
+						@task.Code-@task.Title @if (task.IsComplete)
+						{
+							<i class="fa fa-check" style="color: green;" aria-hidden="true"></i>
+						}
+					</a>
+				</td>
+				<td>@task.Dept?.DeptName</td>
+				<td>@task.Users?.Username</td>
+				<td>@task.CreatedDate.ToString("dd/MMM/yyyy hh:mm tt")</td>
+				<td>@task.UpdateDate.ToString("dd/MMM/yyyy hh:mm tt")</td>
+				<td>@(task.IsActive ? "Active" : "Inactive")</td>
+				<td>
+					<a asp-action="Edit" asp-route-id="@task.Id"><i class="btn fa fa-pencil" aria-hidden="true"></i></a>
+					<a asp-action="Details" asp-route-id="@task.Id"><i class="btn fa fa-eye" aria-hidden="true"></i></a>
+					<a asp-action="Delete" asp-route-id="@task.Id"><i class="btn fa fa-trash" aria-hidden="true"></i></a>
+				</td>
+			</tr>
+			serialNumber++;
+		}
+	</tbody>
+</table>

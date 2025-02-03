@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Management.Models.Tasklist>
+@{
+	int serialNumber = 1;
+}
+<h2>Project Task List</h2>
+<hr />
+<a href="@Url.Action("Create")" class="btn btn-primary mb-2"><i class="fa fa-plus"></i> Add New Task</a>
+<table class="display responsive table" style="width:100%">
+	<thead>
+		<tr>
+			<th data-priority="1">S.No</th>
+			<th data-priority="2">Task Name</th>
+			<th data-priority="4">Created At</th>
+			<th data-priority="5">Status</th>
+			<th data-priority="3">Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var user in Model)
+		{
+			<tr>
+				<td>@serialNumber </td>
+				<td>@user.TaskName</td>
+				<td>@user.CreatedDate.ToShortDateString()</td>
+				<td>@(user.IsActive ? "Active" : "Inactive")</td>
+				<td>
+					<a asp-action="Edit" asp-route-id="@user.TaskID"><i class="btn fa fa-pencil" aria-hidden="true"></i></a>
+					<a asp-action="Details" asp-route-id="@user.TaskID"><i class="btn fa fa-eye" aria-hidden="true"></i></a>
+					<a asp-action="Delete" asp-route-id="@user.TaskID"><i class="btn fa fa-trash" aria-hidden="true"></i></a>
+				</td>
+			</tr>
+			serialNumber++;
+		}
+	</tbody>
+</table>

@@ -1,0 +1,129 @@
+﻿@model Management.Models.Users
+@{
+	ViewData["Title"] = "Edit Profile";
+}
+<style>
+	.form-check-input {
+		width: 20px;
+		height: 20px;
+		cursor: pointer;
+	}
+
+		.form-check-input:checked {
+			background-color: green;
+			border-color: green;
+		}
+
+		.form-check-input:not(:checked) {
+			background-color: red;
+			border-color: red;
+		}
+
+	/* Default active input styles */
+	.form-control, .form-select {
+		border: 1px solid #ced4da; /* Default Bootstrap border color */
+	}
+
+		.form-control:focus, .form-select:focus {
+			border-color: #80bdff; /* Highlighted border on focus */
+			box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+		}
+
+		/* Disabled input styles */
+		.form-control:disabled, .form-select:disabled {
+			background-color: #e9ecef;
+			border-color: #d6d6d6; /* Distinct border color for disabled inputs */
+			cursor: not-allowed;
+			color: #6c757d; /* Faint text color */
+		}
+
+		/* To style the readonly fields (if needed) */
+		.form-control[readonly], .form-select[readonly] {
+			background-color: #f8f9fa;
+			border-color: #adb5bd; /* Distinct border for readonly inputs */
+			color: #495057;
+		}
+</style>
+
+<div class="container mt-4">
+	<h2>@ViewData["Title"]</h2>
+	<form asp-action="Edit" method="post" class="needs-validation" novalidate>
+		<input type="hidden" asp-for="UserId" />
+		<input type="hidden" asp-for="DesiId" />
+		<div class="row mb-3">
+			<div class="col-md-6">
+				<label asp-for="Username" class="form-label"></label>
+				<input asp-for="Username" class="form-control" required readonly="true" />
+				<span asp-validation-for="Username" class="text-danger"></span>
+			</div>
+
+			<div class="col-md-6">
+				<label asp-for="PasswordHash" class="form-label"></label>
+				<div class="input-group">
+					<input asp-for="PasswordHash" type="password" class="form-control" id="password">
+					<div class="input-group-append">
+						<span class="input-group-text">
+							<i class="fa fa-eye" id="togglePassword" style="cursor: pointer;"></i>
+						</span>
+					</div>
+				</div>
+				<span asp-validation-for="PasswordHash" class="text-danger"></span>
+			</div>
+
+		</div>
+
+		<div class="row mb-3">
+			<div class="col-md-6">
+				<label class="control-label" asp-for="Desi.DesiName">Designation</label>
+				<input asp-for="Desi.DesiName" class="form-select" readonly="true" />
+				<span asp-validation-for="Desi.DesiName" class="text-danger"></span>
+			</div>
+			<div class="col-md-6">
+				<label asp-for="Role" class="form-label"></label>
+				<input asp-for="Role" class="form-select" readonly="true" />
+				<span asp-validation-for="Role" class="text-danger"></span>
+			</div>
+
+		</div>
+
+		<div class="row mb-3">
+			<div class="col-md-6">
+				<label asp-for="Email" class="form-label"></label>
+				<input asp-for="Email" type="email" class="form-control" readonly="true" />
+				<span asp-validation-for="Email" class="text-danger"></span>
+			</div>
+
+			<div class="col-md-6">
+				<label asp-for="Mobile" class="form-label"></label>
+				<input asp-for="Mobile" class="form-control" readonly="true" />
+				<span asp-validation-for="Mobile" class="text-danger"></span>
+			</div>
+		</div>
+		<div class="row mb-3">
+			<div class="col-md-3 mt-auto mb-3">
+				<label asp-for="IsActive" class="form-label"></label>
+				<input asp-for="IsActive" type="checkbox" class="form-check-input" disabled />
+			</div>
+			<div class="col-md-3 mt-auto mb-3 justify-content-start">
+				<button type="submit" class="btn btn-primary me-2">Save Changes</button>
+				<a asp-controller="Dashboard" asp-action="index" class="btn btn-secondary">Cancel</a>
+			</div>
+		</div>
+	</form>
+</div>
+<script>
+	document.getElementById("togglePassword").addEventListener("click", function() {
+		var passwordField = document.getElementById("password");
+		var icon = this;
+
+		if (passwordField.type === "password") {
+			passwordField.type = "text"; // Show password
+			icon.classList.remove("fa-eye");
+			icon.classList.add("fa-eye-slash");
+		} else {
+			passwordField.type = "password"; // Hide password
+			icon.classList.remove("fa-eye-slash");
+			icon.classList.add("fa-eye");
+		}
+	});
+</script>

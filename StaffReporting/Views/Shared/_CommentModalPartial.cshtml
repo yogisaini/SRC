@@ -1,0 +1,25 @@
+﻿@model int
+
+<div class="modal fade" id="commentModal-@Model" tabindex="-1" aria-labelledby="commentModalLabel-@Model" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="commentModalLabel-@Model">Add Comment</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form id="commentForm-@Model">
+					<input type="hidden" name="TaskId" value="@Model" />
+					<div class="mb-3">
+						<label for="commentText-@Model" class="form-label">Comment</label>
+						<textarea class="form-control summernote commentText-@Model" id="editor" name="Comment" required></textarea>
+					</div>
+					<div class="invalid-feedback">
+						Comment cannot be empty!
+					</div>
+					<button type="button" class="btn btn-primary add-comment" data-task-id="@Model"><i class='fa fa-comment'></i> Save</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

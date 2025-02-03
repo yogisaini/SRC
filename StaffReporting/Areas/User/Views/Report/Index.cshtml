@@ -1,0 +1,251 @@
+﻿@model IEnumerable<Management.Models.WriteUp>
+
+<form asp-action="Index" method="get">
+	<div class="row g-3 justify-content-between align-items-center">
+		<div class="col-lg-3 col-md-6 col-sm-12">
+			<a asp-controller="Work" asp-action="WriteUp" class="btn btn-primary"><i class="fa fa-plus"></i> Submit New Report</a>
+		</div>
+		<!-- Work Title Dropdown -->
+		<div class="col-lg-3 col-md-6 col-sm-12">
+			<select id="WorkId" name="WorkId" class="select-work form-select w-100" asp-items="ViewBag.Work" required>
+				<option value="">Select Project</option>
+			</select>
+		</div>
+
+		<!-- Sort Order Dropdown -->
+		<div class="col-lg-3 col-md-6 col-sm-12">
+			<select id="sortOrder" name="sortOrder" class="form-select w-100 content-end" asp-items="ViewBag.SortOrderList">
+				<option value="">Sort By</option>
+			</select>
+		</div>
+
+		<!-- Search Button -->
+		<div class="col-lg-3 col-md-6 col-sm-12">
+			<button type="submit" class="btn btn-primary">View</button>
+		</div>
+	</div>
+
+</form>
+
+<div class="row">
+	<div class="col-md-12">
+		@if (Model != null && Model.Any())
+		{
+			int i = 0;
+			foreach (var task in Model)
+			{
+				i = i + 1;
+				<!-- Report Header -->
+				if (i == 1)
+				{
+					<div class="card card-header mt-2">
+						<h4 class="text-uppercase">
+							Report - <strong>Project:</strong> @task.Work?.Code-@task.Work?.Title @if (task.Work.IsComplete)
+							{
+								<i class="fa fa-check" style="color: green;" aria-hidden="true"></i>
+							}
+						</h4>
+
+						@{
+							DateTime currentDate = DateTime.Now;
+							DateTime? targetDate = task.Work.DeadLine; // Nullable DateTime from the model
+
+							// Ensure targetDate is not null before calculating
+							int? remainingDays = null;
+							bool isToday = false;
+
+							if (targetDate.HasValue)
+							{
+								TimeSpan dateDifference = targetDate.Value - currentDate;
+								remainingDays = dateDifference.Days;
+
+								// Check if the target date is today (ignoring time)
+								isToday = targetDate.Value.Date == currentDate.Date;
+							}
+						}
+
+						@if (remainingDays == null)
+						{
+
+						}
+						else if (remainingDays < 0)
+						{
+							<h6 style="color: red;">
+								Project Deadline: @targetDate?.ToString("dd-MMM-yyyy") passed (@Math.Abs(remainingDays.Value)) days ago.
+							</h6>
+						}
+						else if (isToday)
+						{
+							<h6 style="color: orange;">Project Deadline: @targetDate?.ToString("dd-MMM-yyyy") (The deadline is today!)</h6>
+						}
+						else
+						{
+							<h6 style="color: green;">Project Deadline: @targetDate?.ToString("dd-MMM-yyyy") (@(remainingDays + 1) days remaining).</h6>
+						}
+
+
+						<h6 class="m-0 p-0">
+							<strong> Project Description: </strong> @Html.Raw(task.Work.Description)
+
+							<a class="btn btn-sm position-relative assign-user-btn"
+							   data-work-id="@task.WorkId">
+								<span class="badge rounded-pill bg-danger">
+									<i class="fa fa-address-card"></i> Assigned Users
+								</span>
+							</a>
+						</h6>
+					</div>
+				}
+
+				<!-- Task Card -->
+				<div class="card mb-3">
+					<div class="card-body" style="margin-top:-12px !important">
+						<!-- Task Details -->
+						<div class="row">
+							<div class="col-md-12 card-header">
+								<h5>
+									<strong>Date:</strong> @task.SubmittedDate.ToShortDateString()
+									@if (ViewBag.SelectedWorkId > 0 && task?.Users != null)
+									{
+										<strong>Name:</strong> @task?.Users?.Username
+										<span>(@task?.Users?.Desi?.DesiName)</span>
+									}
+									else
+									{
+										<strong> Project: </strong> @task?.Work.Code
+										<span>-</span>
+										@task?.Work.Title
+									}
+								</h5>
+								<h6 class="text-black-50">
+									<strong>Department:</strong> @task?.Work.Dept?.DeptName
+									| <strong>Reporting to:</strong> @task?.Work.Users?.Username
+									| <strong>Task:</strong> @task?.Tasklist?.TaskName
+								</h6>
+							</div>
+
+							<!-- Remarks Section -->
+							<div class="col-md-12 mt-3">
+								<strong class="text-uppercase">Remark: </strong><span style="font-style:italic">@task?.SubmittedDate.ToString("dd/MMM/yyyy hh:mm tt")</span>
+								<p>@Html.Raw(task?.Remark)</p>
+								@if (task?.Linkpaths != null && task.Linkpaths.Any())
+								{
+									<h6>Attached Files:</h6>
+									int fileIndex = 1;
+									@foreach (var item in task.Linkpaths)
+									{
+										<a href="@Url.Content($"~/uploads/{System.IO.Path.GetFileName(item.Link)}")" target="_blank" class="btn btn-link">attached-@fileIndex</a>
+										fileIndex++;
+									}
+								}
+							</div>
+
+							<!-- Comments Section -->
+							<div class="col-md-12 mt-3">
+								<div id="comments-section-@task?.Id">
+									@await Html.PartialAsync("_CommentsPartial", task?.Comment)
+								</div>
+							</div>
+
+							<!-- Add Comment Button -->
+							<div class="col-md-12 mt-3">
+								<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#commentModal-@task?.Id"><i class='fa fa-comment'></i> Add Comment</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Comment Modal -->
+				<div class="col-md-12 mt-3">
+					@await Html.PartialAsync("_CommentModalPartial", task.Id)
+				</div>
+			}
+
+			<!-- Pagination -->
+			<div>
+				<nav aria-label="Page navigation">
+					<ul class="pagination">
+						@if (ViewBag.TotalPages > 1)
+						{
+							@for (int pageIndex = 1; pageIndex <= ViewBag.TotalPages; pageIndex++)
+							{
+								<li class="page-item @(pageIndex == ViewBag.CurrentPage ? "active" : "")">
+									<a class="page-link" href="@Url.Action("Index", new { page = pageIndex, UserId = ViewBag.SelectedUserId, WorkId = ViewBag.SelectedWorkId, sortOrder = ViewBag.SortOrder })">@pageIndex</a>
+								</li>
+							}
+						}
+					</ul>
+				</nav>
+			</div>
+		}
+		else
+		{
+			if (ViewBag.workdata != null)
+			{
+				<div class="card card-header">
+					<h4 class="text-uppercase">
+						Report - <strong>Project:</strong> @ViewBag.workdata.Code-@ViewBag.workdata.Title @if (ViewBag.workdata.IsComplete)
+						{
+							<i class="fa fa-check" style="color: green;" aria-hidden="true"></i>
+						}
+					</h4>
+
+					@{
+						DateTime currentDate = DateTime.Now;
+						DateTime? targetDate = ViewBag.workdata.DeadLine; // Nullable DateTime from the model
+
+						// Ensure targetDate is not null before calculating
+						int? remainingDays = null;
+						bool isToday = false;
+
+						if (targetDate.HasValue)
+						{
+							TimeSpan dateDifference = targetDate.Value - currentDate;
+							remainingDays = dateDifference.Days;
+
+							// Check if the target date is today (ignoring time)
+							isToday = targetDate.Value.Date == currentDate.Date;
+						}
+					}
+
+					@if (remainingDays == null)
+					{
+
+					}
+					else if (remainingDays < 0)
+					{
+						<h6 style="color: red;">
+							Project Deadline: @targetDate?.ToString("dd-MMM-yyyy") passed (@Math.Abs(remainingDays.Value)) days ago.
+						</h6>
+					}
+					else if (isToday)
+					{
+						<h6 style="color: orange;">Project Deadline: @targetDate?.ToString("dd-MMM-yyyy") (The deadline is today!)</h6>
+					}
+					else
+					{
+						<h6 style="color: green;">Project Deadline: @targetDate?.ToString("dd-MMM-yyyy") (@(remainingDays + 1) days remaining).</h6>
+					}
+
+
+					<h6 class="m-0 p-0">
+						<strong> Project Description: </strong> @Html.Raw(ViewBag.workdata.Description)
+
+						<a class="btn btn-sm position-relative assign-user-btn"
+						   data-work-id="@ViewBag.workdata.Id">
+							<span class="badge rounded-pill bg-danger">
+								<i class="fa fa-address-card"></i> Assigned Users
+							</span>
+						</a>
+					</h6>
+				</div>
+			}
+			<div class="d-flex justify-content-center align-items-center mt-5">
+				<div class="text-center">
+					<h5><i class="fa fa-ban"></i> No remark found or no project selected.</h5>
+				</div>
+			</div>
+		}
+	</div>
+</div>
+<div id="assignUserModalContainer"></div>

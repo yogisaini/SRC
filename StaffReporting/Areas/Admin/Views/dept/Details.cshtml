@@ -1,0 +1,28 @@
+﻿@model Management.Models.Dept
+
+<div class="container mt-4">
+	<div class="card">
+		<div class="card-header bg-info text-white">
+			Department Details
+		</div>
+		<div class="card-body">
+			<dl class="row">
+				<dt class="col-sm-4">Department Name</dt>
+				<dd class="col-sm-8">@Model.DeptName</dd>
+
+				<dt class="col-sm-4">Created At</dt>
+				<dd class="col-sm-8">@Model.CreatedDate</dd>
+
+				<dt class="col-sm-4">Status</dt>
+				<dd class="col-sm-8">
+					<span class="badge @(Model.IsActive ? "bg-success" : "bg-danger")">
+						@(Model.IsActive ? "Active" : "Inactive")
+					</span>
+				</dd>
+			</dl>
+		</div>
+		<div class="card-footer text-end">
+			<a asp-action="Index" class="btn btn-secondary">Back to List</a>
+		</div>
+	</div>
+</div>

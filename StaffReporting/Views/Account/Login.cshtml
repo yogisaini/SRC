@@ -1,0 +1,39 @@
+﻿<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card p-4">
+                <div class="card-body">
+                    <h3 class="text-center text-primary mb-4">Welcome Back!</h3>
+
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @Html.ValidationSummary(true)
+                        </div>
+                    }
+
+                    <form asp-controller="Account" asp-action="Login" method="post">
+                        @Html.AntiForgeryToken()
+                        <!-- Username or Email -->
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Email OR Mobile</label>
+                            <input type="text" id="username" name="username" class="form-control" placeholder="Enter your email/Mobile" required>
+                        </div>
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+                        </div>
+                        <!-- Remember Me -->
+                        <div class="form-check mb-3">
+                            <input type="checkbox" id="rememberMe" name="rememberMe" class="form-check-input">
+                            <label for="rememberMe" class="form-check-label">Remember me</label>
+                        </div>
+                        <!-- Login Button -->
+                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

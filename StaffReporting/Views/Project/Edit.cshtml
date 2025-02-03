@@ -1,0 +1,83 @@
+﻿@model Management.Models.Work
+
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white text-center">
+            <h3>Edit Project Details</h3>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit" method="post" class="needs-validation" novalidate>
+                <input asp-for="Id" type="hidden" />
+
+                <!-- Project Name -->
+                <div class="mb-3 col-12">
+                    <label for="Title" class="form-label">Project Name</label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <!-- Project Code -->
+                <div class="mb-3 col-12">
+                    <label for="Code" class="form-label">Project Code</label>
+                    <input asp-for="Code" readonly class="form-control bg-warning" />
+                </div>
+
+                <!-- Assigned Manager -->
+                <div class="mb-3 col-12">
+                    <label for="UserId" class="form-label">Assigned Manager</label>
+                    <select asp-for="UserId" class="form-select" asp-items="@ViewBag.Manager">
+                        <option value="">Please Select</option>
+                    </select>
+                    <span asp-validation-for="UserId" class="text-danger"></span>
+                </div>
+
+                <!-- Department -->
+                <div class="mb-3 col-12">
+                    <label for="DeptId" class="form-label">Department</label>
+                    <select asp-for="DeptId" class="form-select" asp-items="@ViewBag.Depts">
+                        <option value="">Please Select</option>
+                    </select>
+                    <span asp-validation-for="DeptId" class="text-danger"></span>
+                </div>
+
+                <!-- Description -->
+                <div class="mb-3 col-12">
+                    <label for="Description" class="form-label">Description</label>
+                    <textarea id="editor" asp-for="Description" class="form-control summernote" required></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <!-- Form Container -->
+                <div class="row g-3 align-items-center">
+                    <!-- Status Checkboxes (Grouped in a Column) -->
+                    <div class="col-12 col-md-3 d-flex flex-column flex-md-row align-items-center">
+                        <!-- Active Checkbox -->
+                        <div class="form-check me-md-3 mb-2 mb-md-0">
+                            <input asp-for="IsActive" type="checkbox" class="form-check-input" id="isActive" />
+                            <label for="isActive" class="form-check-label">Active</label>
+                        </div>
+
+                        <!-- Project Complete Checkbox -->
+                        <div class="form-check">
+                            <input asp-for="IsComplete" type="checkbox" class="form-check-input" id="isComplete" />
+                            <label for="isComplete" class="form-check-label">Project Complete</label>
+                        </div>
+                    </div>
+
+                    <!-- Project Deadline Input (Increased Width) -->
+                    <div class="col-12 col-md-6 d-flex align-items-center">
+                        <label for="DeadLine" class="form-label me-2">Project Deadline:</label>
+                        <input asp-for="DeadLine" type="date" class="form-control" style="width:50%" id="DeadLine" />
+                    </div>
+
+                    <!-- Buttons (Right-Aligned) -->
+                    <div class="col-12 col-md-3 text-end">
+                        <a asp-action="Index" class="btn btn-secondary me-2">Back to List</a>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

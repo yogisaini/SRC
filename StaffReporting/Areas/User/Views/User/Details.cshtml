@@ -1,0 +1,62 @@
+﻿@model Management.Models.Users
+
+<div class="container mt-4">
+	<div class="card border-info">
+		<div class="card-header bg-info text-white">
+			<h1>User Profile</h1>
+		</div>
+		<div class="card-body">
+			<dl class="row">
+				<dt class="col-sm-3 font-weight-bold">Username</dt>
+				<dd class="col-sm-9">@Model.Username</dd>
+
+				<dt class="col-sm-3 font-weight-bold">Email</dt>
+				<dd class="col-sm-9">@Model.Email</dd>
+
+				<dt class="col-sm-3 font-weight-bold">Mobile</dt>
+				<dd class="col-sm-9">@Model.Mobile</dd>
+
+				<dt class="col-sm-3 font-weight-bold">Role</dt>
+				<dd class="col-sm-9">@Model.Role</dd>
+
+				<dt class="col-sm-3 font-weight-bold">Designation</dt>
+				<dd class="col-sm-9">@Model.Desi.DesiName</dd>
+
+				<dt class="col-sm-3 font-weight-bold">Password</dt>
+				<dd class="col-sm-9">
+					<input type="password" id="password" class="border-0" value="@Model.PasswordHash" readonly>
+					<span id="passwordText" style="display: none; margin-left: 10px;">@Model.PasswordHash</span>
+					<span>
+						<i class="fa fa-eye" id="togglePassword" style="cursor: pointer;"></i>
+					</span>
+
+				</dd>
+				<dt class="col-sm-3 font-weight-bold">Created At</dt>
+				<dd class="col-sm-9">@Model.CreatedAt.ToString("dd/MMM/yyyy hh:mm tt")</dd>
+
+				<dt class="col-sm-3 font-weight-bold">Is Active</dt>
+				<dd class="col-sm-9">@Model.IsActive</dd>
+			</dl>
+		</div>
+		<div class="card-footer text-end">
+			<a asp-controller="User" asp-action="Edit" asp-route-viewtype="1" class="btn btn-secondary">Change Password</a>
+			<a asp-controller="Dashboard" asp-action="Index" class="btn btn-secondary">Back to Dashboard</a>
+		</div>
+	</div>
+</div>
+<script>
+	document.getElementById("togglePassword").addEventListener("click", function() {
+		var passwordField = document.getElementById("password");
+		var icon = this;
+
+		if (passwordField.type === "password") {
+			passwordField.type = "text";
+			icon.classList.remove("fa-eye");
+			icon.classList.add("fa-eye-slash");
+		} else {
+			passwordField.type = "password";
+			icon.classList.remove("fa-eye-slash");
+			icon.classList.add("fa-eye");
+		}
+	});
+</script>

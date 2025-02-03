@@ -1,0 +1,65 @@
+﻿@model Management.Models.Work
+<div class="text-center">
+	<h2 class="my-0">Create Project</h2>
+</div>
+<br />
+<form asp-action="Create" method="post">
+	<div class="row mb-3">
+		<div class="col-md-6">
+			<label for="Title" class="form-label">Project Name</label>
+			<input asp-for="Title" class="form-control" />
+			<div class="text-danger">
+				<span asp-validation-for="Title"></span>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<label for="UserId" class="form-label">Assign a Manager</label>
+			<select asp-for="UserId" class="form-select" asp-items="@ViewBag.Manager">
+				<option value="">Please Select</option>
+			</select>
+			<div class="text-danger">
+				<span asp-validation-for="UserId"></span>
+			</div>
+		</div>
+	</div>
+	<div class="row mb-3">
+		<div class="col-md-12">
+			<label for="Description" class="form-label">Description</label>
+			<textarea id="editor" asp-for="Description" class="form-control summernote" required></textarea>
+			<div class="text-danger">
+				<span asp-validation-for="Description"></span>
+			</div>
+		</div>
+	</div>
+	<div class="row mb-3">
+		<div class="col-md-4 mb-3">
+			<label class="control-label" asp-for="DeptId">Department</label>
+			<select asp-for="DeptId" class="form-control" asp-items="@ViewBag.Depts">
+				<option value="">Please Select</option>
+			</select>
+			<span asp-validation-for="DeptId" class="text-danger"></span>
+		</div>
+		<div class="col-md-4">
+			<label for="Priority" class="form-label">Priority</label>
+			<select asp-for="Priority" class="form-select">
+				<option value="High">High</option>
+				<option value="Medium">Medium</option>
+				<option value="Low">Low</option>
+			</select>
+		</div>
+		<div class="col-md-4">
+			<label for="DeadLine" class="form-label">Project DeadLine</label>
+			<input asp-for="DeadLine" type="date" class="form-control" />
+			<div class="text-danger">
+				<span asp-validation-for="DeadLine"></span>
+			</div>
+		</div>
+	</div>
+	<div class="row mb-3 float-end">
+		<div class="col-12">
+			<button type="submit" class="btn btn-primary">Create</button>
+			<a asp-action="Index" class="btn btn-secondary">Back to List</a>
+		</div>
+	</div>
+
+</form>

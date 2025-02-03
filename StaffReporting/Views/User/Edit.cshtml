@@ -1,0 +1,69 @@
+﻿@model Management.Models.Users
+@{
+	ViewData["Title"] = "Edit User";
+}
+
+<div class="container mt-4">
+	<h1>@ViewData["Title"]</h1>
+	<form asp-action="Edit" method="post" class="needs-validation" novalidate>
+		<input type="hidden" asp-for="UserId" />
+
+		<div class="row mb-3">
+			<div class="col-md-6">
+				<label asp-for="Username" class="form-label"></label>
+				<input asp-for="Username" class="form-control" required />
+				<span asp-validation-for="Username" class="text-danger"></span>
+			</div>
+
+			<div class="col-md-6">
+				<label asp-for="PasswordHash" class="form-label"></label>
+				<input asp-for="PasswordHash" class="form-control" />
+				<span asp-validation-for="PasswordHash" class="text-danger"></span>
+			</div>
+		</div>
+
+		<div class="row mb-3">
+			<div class="col-md-6">
+				<label class="control-label" asp-for="DesiId">Designation</label>
+				<select asp-for="DesiId" class="form-control" asp-items="@ViewBag.Desis">
+					<option value="">Please Select</option>
+				</select>
+				<span asp-validation-for="DesiId" class="text-danger"></span>
+			</div>
+			<div class="col-md-6">
+				<label asp-for="Role" class="form-label"></label>
+				<select asp-for="Role" asp-items="ViewBag.Roles" class="form-select"></select>
+				<span asp-validation-for="Role" class="text-danger"></span>
+			</div>
+
+		</div>
+
+		<div class="row mb-3">
+			<div class="col-md-6">
+				<label asp-for="Email" class="form-label"></label>
+				<input asp-for="Email" type="email" class="form-control" />
+				<span asp-validation-for="Email" class="text-danger"></span>
+			</div>
+
+			<div class="col-md-6">
+				<label asp-for="Mobile" class="form-label"></label>
+				<input asp-for="Mobile" class="form-control" />
+				<span asp-validation-for="Mobile" class="text-danger"></span>
+			</div>
+		</div>
+		<div class="row mb-3">
+			<div class="col-md-3 mt-auto mb-3">
+				<label asp-for="IsActive" class="form-label"></label>
+				<input asp-for="IsActive" type="checkbox" class="form-check-input" />
+			</div>
+			<div class="col-md-3 mt-auto mb-3">
+				<label asp-for="permission" class="form-label">Project Creation</label>
+				<input asp-for="permission" type="checkbox" class="form-check-input" />
+			</div>
+			<div class="col-md-3 mt-auto mb-3 justify-content-start">
+				<button type="submit" class="btn btn-primary me-2">Save Changes</button>
+				<a asp-action="Index" class="btn btn-secondary">Cancel</a>
+			</div>
+		</div>
+	</form>
+</div>
